@@ -1,0 +1,63 @@
+<div class="col-lg-12 border-bottom" style="margin-right:0;margin-left:0;margin-bottom:25px;">
+    <h2>Historial</h2>
+    <ol class="breadcrumb">
+        <li>
+            <a href="javascript:;">Ganaderos</a>
+        </li>
+        <li class="active">
+            <strong>Historial</strong>
+        </li>
+    </ol>
+</div>
+<div class="wrapper wrapper-content animated fadeInRight white-bg" style="margin-top:5px;">
+    <div class="row">
+        <div class="col-lg-12 text-center">
+            <!--
+            <div class="col-lg-3" style="padding-left:0;margin-top:20px;margin-bottom:20px">
+                <input type="text" class="form-control" placeholder="Documento" (input)="onSearchChange($event.target.value)"/>
+            </div>
+            -->
+            <table class="table table-striped" style="color: #000;">
+                <thead>
+                    <tr>
+                        <th>DOCUMENTO</th>
+                        <th>PROPIETARIO</th>
+                        <th>IMAGEN MARCA</th>
+                        <th>IMAGEN MUESTRA</th>
+                        <th>FECHA CONSULTA</th>
+                        <th>% DE COINCIDENCIA</th>
+                        <th>CERTIFICADO</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of listImagesCompare | paginate: { itemsPerPage: 7, currentPage: p }">
+                        <td>{{item.imagen_marca.propietario.documento}}</td>
+                        <td>{{item.imagen_marca.propietario.nombre | uppercase}} {{item.imagen_marca.propietario.apellido | uppercase}}</td>
+                        <td><a href="javascript:;" (click)="showImages('Marca', item.imagen_muestra)"><i class="fa fa-file-image-o" style="font-size: 18px;"></i></a></td>
+                        <td><a href="javascript:;" (click)="showImages('Muestra', item.imagen_marca.imagen)"><i class="fa fa-file-image-o" style="font-size: 18px;"></i></a></td>
+                        <td>{{item.fechaDeSubida}}</td>
+                        <td>{{item.result_comparation * 100}}</td>
+                        <td><a href="javascript:;" (click)="showImages('Marca', item.imagen_muestra)"><i class="fa fa-cloud-download" style="font-size: 18px;"></i></a></td>
+                    </tr>
+                </tbody>
+            </table>
+            <pagination-controls (pageChange)="p = $event" previousLabel="Anterior" nextLabel="Siguiente"></pagination-controls>
+        </div>
+    <simple-notifications [options]="optionsNotifications"></simple-notifications>
+    <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+    <bs-modal #modalImage [keyboard]="false" [backdrop]="'static'">
+        <bs-modal-header [showDismiss]="false" class="text-center">
+            <h3 class="modal-title"><strong>{{title}}</strong></h3>
+        </bs-modal-header>
+        <bs-modal-body>
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <img class="img-responsive img-rounded" height="300" width="300" style="margin-left: auto; margin-right: auto" src="{{imageToShow}}">
+                </div>
+            </div>
+        </bs-modal-body>
+        <bs-modal-footer>
+            <button type="button" class="btn btn-primary" (click)="modal.close()">Cerrar</button>
+        </bs-modal-footer>
+    </bs-modal>
+</div>

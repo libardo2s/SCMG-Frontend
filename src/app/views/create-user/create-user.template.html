@@ -1,0 +1,133 @@
+<div class="col-lg-12 border-bottom" style="margin-right:0;margin-left:0;margin-bottom:25px;">
+    <h2>Usuarios</h2>
+    <ol class="breadcrumb">
+        <li>
+            <a href="javascript:;">Ganaderos</a>
+        </li>
+        <li class="active">
+            <strong>Usuarios</strong>
+        </li>
+    </ol>
+</div>
+<div class="wrapper wrapper-content animated fadeInRight white-bg" style="margin-top:5px;">
+    <div class="col-lg-12 text-center">
+        <div class="col-lg-6" style="padding-right: 0px;padding-left: 0px;">
+            <button type="button" class="btn btn-primary block m-b" (click)="openModalCrear()">
+                <i class="fa fa-plus"></i>
+                Crear usuario
+            </button>
+        </div>
+        <div *ngIf="listaUsuarios.length !==0; else elseBlock">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>GANADERO</th>
+                        <th>USUARIO</th>
+                        <th>ESTADO</th>
+                        <th>ACCIONES</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let usuario of listaUsuarios">
+                        <td>{{usuario.propietario.documento}}</td>
+                        <td>{{usuario.usuario.username | uppercase}}</td>
+                        <td *ngIf="usuario.usuario.is_active; else elseBlockIcon">
+                            <i class="fa fa-toggle-on" style="font-size: 18px;color:#1ab394;"></i>
+                        </td>
+                        <ng-template #elseBlockIcon>
+                            <td>
+                                <i class="fa fa-toggle-off" style="font-size: 18px;color:#ed5565;"></i>
+                            </td>        
+                        </ng-template>
+                        <td>
+                            <a href="javascript:;" (click)="cambiarPws(usuario)"><i class="fa fa-key" style="font-size: 18px;"></i></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <ng-template #elseBlock>
+            <div class="col-lg-12">
+                <h3 style="font-weight: bold;">EL SISTEMA NO REGISTRA PROPIETARIOS</h3>
+            </div>
+        </ng-template>
+    </div>
+    <bs-modal #modalCrearUsuario [keyboard]="false" [backdrop]="'static'">
+        <form #saveUsuario="ngForm" (ngSubmit)="onSubmitUsuario(saveUsuario)">
+            <bs-modal-header [showDismiss]="true" class="text-center">
+                <h3 class="modal-title"><strong>Crear usuario</strong></h3>
+            </bs-modal-header>
+            <bs-modal-body>
+                <div class="row">
+                    <div class="col-lg-12 text-center">
+                        <div class="col-lg-4 form-group">
+                            <label>Propietarios</label>
+                            <select 
+                                class="form-control m-b"
+                                name="propietario" 
+                                [(ngModel)]="propietario"
+                                required>    
+                                <option *ngFor="let p of listaGanaderos" value="{{p.id}}">
+                                    {{p.nombre | uppercase}} {{p.apellido | uppercase}}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-lg-4 form-group">
+                            <label>Usuario</label>
+                            <input 
+                            type="text" 
+                            class="form-control" 
+                            placeholder="usuario" 
+                            required 
+                            name="usuario"
+                            [(ngModel)]="usuario"
+                            [maxlength]="30">
+                        </div>
+                        <div class="col-lg-4 form-group">
+                            <label>Contraseña</label>
+                            <input 
+                            type="text" 
+                            class="form-control" 
+                            placeholder="contrasena" 
+                            required 
+                            name="contrasena"
+                            [(ngModel)]="contrasena">
+                        </div>
+                    </div>
+                    <div class="col-lg-12" style="margin-left: 15px;">
+                        <button type="submit" class="btn btn-primary block m-b" [disabled]="!saveUsuario.valid">Guardar</button>
+                    </div>
+                </div>
+            </bs-modal-body>
+        </form>
+    </bs-modal>
+    <bs-modal #modalCambiarContrasena [keyboard]="false" [backdrop]="'static'">
+        <form #cambiarContrasena="ngForm" (ngSubmit)="onSubmitContrasena(cambiarContrasena)">
+            <bs-modal-header [showDismiss]="true" class="text-center">
+                <h3 class="modal-title"><strong>Cambiar Contraseña</strong></h3>
+            </bs-modal-header>
+            <bs-modal-body>
+                <div class="row">
+                    <div class="col-lg-12 form-group">
+                        <label>Contraseña</label>
+                        <input 
+                        type="text" 
+                        class="form-control" 
+                        placeholder="contrasena" 
+                        required 
+                        name="contrasena"
+                        [(ngModel)]="contrasena">
+                        
+                        <button 
+                            type="submit" 
+                            class="btn btn-primary block m-b" 
+                            style="margin-top: 15px;"
+                            [disabled]="!cambiarContrasena.valid">Guardar</button>
+                    </div>
+                </div>
+            </bs-modal-body>
+        </form>
+    </bs-modal>
+    <simple-notifications [options]="optionsNotifications"></simple-notifications>
+    <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+</div>

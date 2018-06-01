@@ -1,0 +1,208 @@
+<div class="col-lg-12 border-bottom" style="margin-right:0;margin-left:0;margin-bottom:2px;">
+    <div>
+        <div class="col-lg-8">
+            <h2 >Lista de Ganaderos</h2>
+            <ol class="breadcrumb">
+                <li>
+                    <a href="javascript:;">Ganaderos</a>
+                </li>
+                <li class="active">
+                    <strong>Lista de Ganaderos</strong>
+                </li>
+            </ol>
+        </div>
+        <div class="col-lg-4">
+            <div style="padding-left:0;margin-top:20px;margin-bottom:20px">
+                <div class="input-group">
+                    <input [(ngModel)]="query" type="text" class="form-control" placeholder="Buscar" />
+                    <span class="input-group-btn"> 
+                        <button type="button" class="btn btn-primary">
+                            <i class="fa fa-search"></i>
+                    </button> 
+                </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="wrapper wrapper-content animated fadeInRight white-bg" style="margin-top:5px;">
+    <div class="row">
+        <div class="col-lg-12 text-center" style="margin-top: 20px;">
+            <div *ngIf="listGanaderos.length !==0; else elseBlock">
+                <table class="table table-striped" style="color: #000;">
+                    <thead>
+                        <tr>
+                            <th>DOCUMENTO</th>
+                            <th>NOMBRES</th>
+                            <th>APELLIDOS</th>
+                            <th>TELEFONO</th>
+                            <th>DIRECCIÓN</th>
+                            <th>CIUDAD</th>
+                            <th>REGIÓN</th>
+                            <th>FINCA</th>                      
+                            <th>MARCA</th>
+                            <th>ACCIONES</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let ganadero of listGanaderos | paginate: { itemsPerPage: 7, currentPage: p } | searchfilter: query ">
+                            <td>{{ganadero.documento}}</td>
+                            <td>{{ganadero.nombre | uppercase}} {{ganadero.segundo_nombre | uppercase}}</td>
+                            <td>{{ganadero.apellido | uppercase}} {{ganadero.segundo_apellido | uppercase}}</td>
+                            <td>{{ganadero.telefono}}</td>
+                            <td>{{ganadero.direccion | uppercase}}</td>
+                            <td>{{ganadero.ciudad | uppercase}}</td>
+                            <td>{{ganadero.region | uppercase}}</td>
+                            <td>{{ganadero.finca | uppercase}}</td>
+                            <td><a href="javascript:;" (click)="openEdit(ganadero)"><i class="fa fa-file-image-o" style="font-size: 18px;"></i></a></td>
+                            <td>
+                                <a href="javascript:;" (click)="updateGanadero(ganadero)"><i class="fa fa-edit" style="font-size: 18px;"></i></a>
+                                <a href="javascript:;" (click)="openDelete(ganadero.documento)"><i class="fa fa-eraser" style="font-size: 18px;color:#ed5565;"></i></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <pagination-controls (pageChange)="p = $event" previousLabel="Anterior" nextLabel="Siguiente"></pagination-controls>
+            </div>
+            <ng-template #elseBlock>
+                <h3 style="font-weight: bold;">EL SISTEMA NO REGISTRA PROPIETARIOS</h3>
+            </ng-template>
+        </div>
+    </div>
+    <simple-notifications [options]="options"></simple-notifications>
+    <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+    <bs-modal #modalDatos [keyboard]="false" [backdrop]="'static'">
+        <bs-modal-header [showDismiss]="true">
+            <h4 class="modal-title">Imagen Marca Ganadero</h4>
+        </bs-modal-header>
+        <bs-modal-body>
+            <div class="row">
+                <div class="col-lg-12 text-center" *ngFor="let imagen of listImages">
+                    <img class="img-responsive img-rounded" height="300" width="300" style="margin-left: auto; margin-right: auto" src="{{imagen.imagen}}">
+                </div>
+            </div>
+        </bs-modal-body>
+    </bs-modal>
+    <bs-modal #modalUpdate [keyboard]="false" [backdrop]="'static'">
+        <bs-modal-header [showDismiss]="true" class="text-center">
+            <h3 class="modal-title"><strong>Actualizar información</strong></h3>
+        </bs-modal-header>
+        <bs-modal-body>
+            <div class="row">
+                <div class="col-lg-12">
+                    <form [formGroup]="formUpdate" (ngSubmit)="updateGan(formUpdate)">
+                        <div class="col-lg-12 form-group">
+                            <label>Documento</label>
+                            <input 
+                            type="text" 
+                            class="form-control" 
+                            placeholder="Documento" 
+                            required
+                            [formControl] = "formUpdate.controls['documento']"
+                            [maxlength]="10"
+                            (keypress)="onlyNumbers($event)">
+                        </div>
+                        <div class="col-lg-6 form-group">
+                            <label>Primer Nombre</label>
+                            <input 
+                            type="text" 
+                            class="form-control" 
+                            placeholder="Primer Nombre" 
+                            required 
+                            [formControl]="formUpdate.controls['nombre']"
+                            [maxlength]="30"
+                            (keypress)="onlyText($event)">
+                        </div>
+                        <div class="col-lg-6 form-group">
+                            <label>Segundo Nombre</label>
+                            <input 
+                            type="text" 
+                            class="form-control" 
+                            placeholder="Segundo Nombre" 
+                            [formControl] = "formUpdate.controls['segundo_nombre']"
+                            [maxlength]="30"
+                            (keypress)="onlyText($event)">
+                        </div>
+                        <div class="col-lg-6 form-group">
+                            <label>Primer Apellido</label>
+                            <input 
+                            type="text" 
+                            class="form-control" 
+                            placeholder="Primer Apellido" 
+                            required
+                            [formControl] = "formUpdate.controls['apellido']"
+                            [maxlength]="30"
+                            (keypress)="onlyText($event)">
+                        </div>
+                        <div class="col-lg-6 form-group">
+                            <label>Segundo Apellido</label>
+                            <input 
+                            type="text" 
+                            class="form-control" 
+                            required
+                            placeholder="Segundo Apellido" 
+                            [formControl] = "formUpdate.controls['segundo_apellido']"
+                            [maxlength]="30"
+                            (keypress)="onlyText($event)">
+                        </div>
+                        <div class="col-lg-4 form-group">
+                            <label>Telefono</label>
+                            <input 
+                            type="text" 
+                            class="form-control" 
+                            required
+                            placeholder="Telefono" 
+                            [formControl] = "formUpdate.controls['telefono']"
+                            [maxlength]="10"
+                            (keypress)="onlyNumbers($event)">
+                        </div>
+                        <div class="col-lg-4 form-group">
+                            <label>Direccion</label>
+                            <input 
+                            type="text" 
+                            class="form-control" 
+                            required
+                            placeholder="Dirección" 
+                            [formControl] = "formUpdate.controls['direccion']"
+                            [maxlength]="30">
+                        </div>
+                        <div class="col-lg-4 form-group">
+                            <label>Finca</label>
+                            <input 
+                            type="text" 
+                            class="form-control" 
+                            placeholder="Nombre Finca" 
+                            [formControl] = "formUpdate.controls['finca']"
+                            [maxlength]="30"
+                            (keypress)="onlyText($event)">
+                        </div>
+                        <div class="col-lg-6 form-group">
+                            <label>Departamento</label>
+                            <select 
+                                class="form-control m-b" 
+                                required 
+                                [formControl] = "formUpdate.controls['departamento']"
+                                required
+                                (change)="loadMunicipios($event.target.value)">    
+                                <option *ngFor="let dpt of lista_departamentos" value="{{dpt}}">{{dpt}}</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-6 form-group">
+                            <label>Ciudad</label>
+                            <select 
+                                class="form-control m-b"
+                                [formControl] = "formUpdate.controls['ciudad']"
+                                required>
+                                <option *ngFor="let mnp of lista_municipios" value="{{mnp}}">{{mnp}}</option>
+                            </select>
+                        </div>
+                        <br><br>
+                        <div class="col-lg-3">
+                            <button type="submit" class="btn btn-primary block m-b" [disabled]="!formUpdate.valid">Guardar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </bs-modal-body>
+    </bs-modal>
+</div>

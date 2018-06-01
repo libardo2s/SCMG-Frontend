@@ -1,0 +1,201 @@
+<div class="col-lg-12 border-bottom" style="margin-right:0;margin-left:0;margin-bottom:25px;">
+    <h2 >Registrar Ganadero</h2>
+    <ol class="breadcrumb">
+        <li>
+            <a href="javascript:;">Ganaderos</a>
+        </li>
+        <li class="active">
+            <strong>Registrar Ganadero</strong>
+        </li>
+    </ol>
+</div>
+<div class="wrapper wrapper-content animated fadeInRight white-bg" style="margin-top:5px;">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="col-lg-12 border-bottom">
+                <form #saveForm="ngForm" (ngSubmit)="saveGanadero(saveForm)">
+                    <div class="col-lg-4 form-group">
+                        <label>Documento</label>
+                        <input 
+                        type="text" 
+                        class="form-control" 
+                        placeholder="Documento" 
+                        required 
+                        name="documento"
+                        [(ngModel)]="documento"
+                        [maxlength]="10"
+                        (keypress)="onlyNumbers($event)">
+                    </div>
+                    <div class="col-lg-4 form-group">
+                        <label>Primer Nombre</label>
+                        <input 
+                        type="text" 
+                        class="form-control" 
+                        placeholder="Primer Nombre" 
+                        required 
+                        name="nombre"
+                        [(ngModel)]="nombre"
+                        [maxlength]="30"
+                        (keypress)="onlyText($event)">
+                    </div>
+                    <div class="col-lg-4 form-group">
+                        <label>Segundo Nombre</label>
+                        <input 
+                        type="text" 
+                        class="form-control" 
+                        placeholder="Segundo Nombre" 
+                        name="segundo_nombre"
+                        [(ngModel)]="segundo_nombre"
+                        [maxlength]="30"
+                        (keypress)="onlyText($event)">
+                    </div>
+                    <div class="col-lg-4 form-group">
+                        <label>Primer Apellido</label>
+                        <input 
+                        type="text" 
+                        class="form-control" 
+                        placeholder="Primer Apellido" 
+                        name="apellido"
+                        [(ngModel)]="apellido"
+                        [maxlength]="30"
+                        (keypress)="onlyText($event)">
+                    </div>
+                    <div class="col-lg-4 form-group">
+                        <label>Segundo Apellido</label>
+                        <input 
+                        type="text" 
+                        class="form-control" 
+                        placeholder="Segundo Apellido" 
+                        name="segundo_apellido"
+                        [(ngModel)]="segundo_apellido"
+                        [maxlength]="30"
+                        (keypress)="onlyText($event)">
+                    </div>
+                    <div class="col-lg-4 form-group">
+                        <label>Telefono</label>
+                        <input 
+                        type="text" 
+                        class="form-control" 
+                        placeholder="Telefono" 
+                        name="telefono"
+                        [(ngModel)]="telefono"
+                        [maxlength]="10"
+                        (keypress)="onlyNumbers($event)">
+                    </div>
+                    <div class="col-lg-3 form-group">
+                        <label>Finca</label>
+                        <input 
+                        type="text" 
+                        class="form-control" 
+                        placeholder="Nombre Finca" 
+                        name="finca"
+                        [(ngModel)]="finca"
+                        [maxlength]="30"
+                        (keypress)="onlyText($event)">
+                    </div>
+                    <div class="col-lg-3 form-group">
+                        <label>Dirección</label>
+                        <input 
+                        type="text" 
+                        class="form-control" 
+                        placeholder="Dirección" 
+                        name="direccion"
+                        [(ngModel)]="direccion">
+                    </div>
+                    <div class="col-lg-3 form-group">
+                        <label>Departamento</label>
+                        <select 
+                            class="form-control m-b"
+                            name="region" 
+                            [(ngModel)]="region"
+                            required
+                            (change)="loadMunicipios($event.target.value)">    
+                            <option *ngFor="let dpt of lista_departamentos" value="{{dpt}}">{{dpt}}</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-3 form-group">
+                        <label>Ciudad</label>
+                        <select 
+                            class="form-control m-b"
+                            name="ciudad"
+                            [(ngModel)]="ciudad"
+                            required>
+                            <option *ngFor="let mnp of lista_municipios" value="{{mnp}}">{{mnp}}</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-6">
+                        <button type="submit" class="btn btn-primary block m-b" [disabled]="!saveForm.valid">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-lg-12" style="margin-top: 15px;">
+            <div class="col-lg-12">
+                <div class="col-lg-5">
+                    <div class="input-group" style="margin-bottom: 20px;">
+                        <form 
+                            role="form"
+                            class="form-inline"
+                            #searchForm="ngForm"
+                            (ngSubmit)="searchGanadero(searchForm)">
+                            <div class="form-group">
+                                <input 
+                                    type="text" 
+                                    placeholder="Documento"
+                                    class="form-control"
+                                    required 
+                                    name="documento_ganadero"
+                                    [(ngModel)]="documento_ganadero"
+                                    [maxlength]="10"
+                                    (keypress)="onlyNumbers($event)">
+                            </div>
+                            <button 
+                                class="btn btn-primary"
+                                type="submit"
+                                [disabled]="!searchForm.valid">
+                                Buscar Ganadero
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <h3><strong>{{ganaderoStr | uppercase}}</strong></h3>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="col-lg-6">
+                    <image-upload
+                        [url]="urlImage"
+                        [headers]="options"
+                        [extensions]="['jpg','png']"
+                        [dropBoxMessage]="'Marca Registrada'"
+                        [buttonCaption]="'Seleccione Imagen'"
+                        [clearButtonCaption] ="'Eliminar'"
+                        [beforeUpload]="onBeforeUpload"
+                        (uploadFinished)="onUploadFinished($event)"
+                        (click)="assigType(0)"
+                        [max]="1"
+                        [preview]="true">
+                    </image-upload>
+                </div>
+                <div class="col-lg-6">
+                    <image-upload
+                        [url]="urlImage"
+                        [headers]="options"
+                        [extensions]="['jpg','png']"
+                        [dropBoxMessage]="'Marca Comparación'"
+                        [buttonCaption]="'Seleccione Imagen'"
+                        [clearButtonCaption] ="'Eliminar'"
+                        [beforeUpload]="onBeforeUpload"
+                        (uploadFinished)="onUploadFinished($event)"
+                        (click)="assigType(1)"
+                        [max]="1"
+                        [preview]="true">
+                    </image-upload>
+                </div>
+            </div>
+        </div>
+    </div>
+    <simple-notifications [options]="optionsNotifications"></simple-notifications>
+    <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+</div>
