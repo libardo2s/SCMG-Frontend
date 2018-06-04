@@ -62,7 +62,7 @@ export class compareListViewComponent implements OnInit {
             }else {
                 this.openToast('error', result.message);
             }
-            console.log(result);
+            // console.log(result);
         }, err => {
             this.loading = false;
             this.openToast('error', 'Ha ocurrido un error, intente nuevamente');

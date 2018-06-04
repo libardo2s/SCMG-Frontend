@@ -7,6 +7,7 @@ import { LoadingModule } from 'ngx-loading';
 import { ImageUploadModule } from "angular2-image-upload";
 import { compareViewComponent } from './compare-view.component';
 import { BsModalModule } from 'ng2-bs3-modal';
+import {NgxPaginationModule} from 'ngx-pagination'; // <-- import the module
 
 @NgModule({
     declarations: [compareViewComponent],
@@ -18,7 +19,8 @@ import { BsModalModule } from 'ng2-bs3-modal';
         FormsModule,
         ReactiveFormsModule,
         ImageUploadModule,
-        BsModalModule
+        BsModalModule,
+        NgxPaginationModule
     ],
 })
 

@@ -25,6 +25,9 @@ import { UsuarioModule } from './views/usuario-view/usuario-view.module';
 // Firebase 
 import { AngularFireModule } from 'angularfire2';
 import { environment } from '../environments/environment';
+import { MessagingService } from './service/messaging.service';
+import { AngularFireDatabaseModule } from 'angularfire2/database';
+import { AngularFireAuthModule } from 'angularfire2/auth';
 
 @NgModule({
   declarations: [
@@ -50,9 +53,11 @@ import { environment } from '../environments/environment';
     LayoutsModule,
 
     //Firebase
-    AngularFireModule.initializeApp(environment.firebase)
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireDatabaseModule,
+    AngularFireAuthModule
   ],
-  providers: [{ provide: LocationStrategy, useClass: HashLocationStrategy }, CookieService],
+  providers: [{ provide: LocationStrategy, useClass: HashLocationStrategy }, CookieService, MessagingService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

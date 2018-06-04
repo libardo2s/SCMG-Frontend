@@ -12,6 +12,7 @@ import { CookieService } from 'angular2-cookie/core';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import { ɵPRE_STYLE } from '@angular/animations';
+import { MessagingService } from '../../service/messaging.service';
 
 declare var jQuery:any;
 declare var $:any;
@@ -19,11 +20,13 @@ declare var $:any;
 @Component({
     selector: 'compareView',
     templateUrl: 'compare-view.template.html',
-    providers: [NotificationsService, RequestService, ImageService],
+    providers: [NotificationsService, RequestService, ImageService, MessagingService],
     styleUrls: ['../../app.component.css'],
 })
 
 export class compareViewComponent implements OnInit {
+
+    p: number = 1;
 
     @ViewChild('confirmModal')
     modal: BsModalComponent;
@@ -40,6 +43,8 @@ export class compareViewComponent implements OnInit {
         lastOnBottom: true
     }
 
+    message;
+
     private subscription: Subscription;
 
     constructor(
@@ -47,6 +52,7 @@ export class compareViewComponent implements OnInit {
         private requestService: RequestService,
         private _cookieService: CookieService,
         private router : Router,
+        private msgService: MessagingService
     ) {}
 
     ngOnInit(): void {
@@ -54,6 +60,9 @@ export class compareViewComponent implements OnInit {
             this.router.navigate(['login']);
         }else {
             this.urlImage = URLS.imagePostCompare;
+            this.msgService.getPermission()
+            this.msgService.receiveMessage()
+            this.message = this.msgService.currentMessage
             // console.log(this._cookieService.get('csrftoken'));
         }
     }
