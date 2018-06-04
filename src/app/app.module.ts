@@ -22,6 +22,10 @@ import { CreateUserModule } from './views/create-user/create-user.module';
 import { CookieService } from 'angular2-cookie/core';
 import { UsuarioModule } from './views/usuario-view/usuario-view.module';
 
+// Firebase 
+import { AngularFireModule } from 'angularfire2';
+import { environment } from '../environments/environment';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -40,10 +44,13 @@ import { UsuarioModule } from './views/usuario-view/usuario-view.module';
     CreateUserModule,
     UsuarioModule,
 
+    RouterModule.forRoot(ROUTES),
+
     // Modules
     LayoutsModule,
 
-    RouterModule.forRoot(ROUTES)
+    //Firebase
+    AngularFireModule.initializeApp(environment.firebase)
   ],
   providers: [{ provide: LocationStrategy, useClass: HashLocationStrategy }, CookieService],
   bootstrap: [AppComponent]

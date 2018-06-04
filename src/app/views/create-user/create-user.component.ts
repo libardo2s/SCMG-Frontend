@@ -20,6 +20,8 @@ import { Router } from '@angular/router';
 })
 export class createUserComponent implements OnInit {
 
+    p: number = 1;
+
     loading: boolean;
     listaUsuarios = [];
     listaGanaderos = [];

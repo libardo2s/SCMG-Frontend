@@ -1,4 +1,4 @@
-<div class="col-lg-12 border-bottom" style="margin-right:0;margin-left:0;margin-bottom:25px;">
+<div class="col-lg-12 border-bottom white-bg" style="margin-right:0;margin-left:0;margin-bottom:10px;padding-bottom: 10px;">
     <h2>Comparar Marcas</h2>
     <ol class="breadcrumb">
         <li>
@@ -9,45 +9,58 @@
         </li>
     </ol>
 </div>
-<div class="wrapper wrapper-content animated fadeInRight white-bg" style="margin-top:5px;">
-    <div class="row">
-        <div class="col-lg-12 text-center">
-            <div class="col-lg-4"></div>
-            <div class="col-lg-4">
-                <image-upload
-                    id="fileinput"
-                    [url]="urlImage"
-                    [headers]="options"
-                    [extensions]="['jpg']"
-                    [dropBoxMessage]="''"
-                    [buttonCaption]="'Imagen de muestra'"
-                    [clearButtonCaption] ="'Eliminar'"
-                    [beforeUpload]="onBeforeUpload"
-                    (uploadFinished)="onUploadFinished($event)"
-                    [max]="1"
-                    [preview]="false">
-                </image-upload>
-            </div>
+<div class="wrapper wrapper-content">
+    <div class="col-lg-12 text-center white-bg" style="padding: 30px 15px 15px 15px;border-radius: 8px;">
+        <div class="col-lg-4"></div>
+        <div class="col-lg-4">
+            <image-upload
+                id="fileinput"
+                [url]="urlImage"
+                [headers]="options"
+                [extensions]="['jpg']"
+                [dropBoxMessage]="''"
+                [buttonCaption]="'Imagen de muestra'"
+                [clearButtonCaption] ="'Eliminar'"
+                [beforeUpload]="onBeforeUpload"
+                (uploadFinished)="onUploadFinished($event)"
+                [max]="1"
+                [preview]="false">
+            </image-upload>
         </div>
-        <div class="col-lg-12" style="margin-top:7px;">
-            <div class="col-lg-12" style="margin-bottom:7px;">
-                <img id="img-load" class="img-responsive img-rounded" height="200" width="200" style="margin-left: auto; margin-right: auto;" src="">                
-            </div>
-            <div class="col-lg-3" *ngFor="let img of imagesResult; let i=index">
-                <div class="ibox float-e-margins" style="border-color: #e7eaec;">
-                    <div class="ibox-content">
-                        <div class="text-center" style="width:70%;padding-top:2px;padding-bottom:10px;border-radius:10px;">
-                            <a href="javascript:;" (click)="confirmation(img.imagen_compare_intermediate, pos, img.result_comparation)">
-                                <img class="img-responsive img-rounded" height="100" width="100" style="margin-left: auto; margin-right: auto; margin-bottom:5%;" src="{{img.imagen_compare_intermediate.imagen}}">
-                                <span class="label label-primary">{{img.imagen_compare_intermediate.propietario.nombre | uppercase}} {{img.imagen_compare_intermediate.propietario.apellido | uppercase}} {{img.imagen_compare_intermediate.propietario.segundo_apellido | uppercase}}</span>
-                                <span class="label label-primary">DOCUMENTO: {{img.imagen_compare_intermediate.propietario.documento}}</span><br>
-                                <span class="label label-primary">% COINCIDENCIA: {{img.result_comparation * 100 | number : '1.2-2'}}</span>
-                            </a>
+        <div class="col-lg-12" style="margin-bottom:7px;margin-top: 10px;">
+            <img id="img-load" class="img-responsive img-rounded" height="100" width="100" style="margin-left: auto; margin-right: auto;" src="">                
+        </div>
+    </div>
+    <div class="col-lg-12 white-bg" style="padding: 30px 15px 15px 15px;border-radius: 8px;margin-top: 15px;">
+        <div class="col-lg-3" *ngFor="let img of imagesResult; let i=index">
+            <a href="javascript:;" (click)="confirmation(img.imagen_compare_intermediate, pos, img.result_comparation)">
+                <div class="container-img" style="border-radius: 8px;">
+                    <img src="{{img.imagen_compare_intermediate.imagen}}" alt="Avatar" class="image">
+                    <div class="overlay">
+                        <div class="text">
+                            <span class="label label-primary">{{img.imagen_compare_intermediate.propietario.documento}}</span><br>
+                            <span class="label label-primary">{{img.imagen_compare_intermediate.propietario.nombre | uppercase}} {{img.imagen_compare_intermediate.propietario.apellido | uppercase}} {{img.imagen_compare_intermediate.propietario.segundo_apellido | uppercase}}</span>
+                            <span class="label label-primary">{{img.result_comparation * 100 | number : '1.2-2'}} %</span>
                         </div>
                     </div>
                 </div>
+            </a>
+            <!--
+            <div class="ibox float-e-margins" style="border-color: #e7eaec;">
+                <div class="ibox-content">
+                    <div class="text-center" style="width:70%;padding-top:2px;padding-bottom:10px;border-radius:10px;">
+                        <a href="javascript:;" (click)="confirmation(img.imagen_compare_intermediate, pos, img.result_comparation)">
+                            <img class="img-responsive img-rounded" height="50" width="50" style="margin-left: auto; margin-right: auto; margin-bottom:5%;" src="{{img.imagen_compare_intermediate.imagen}}">
+                            <span class="label label-primary">{{img.imagen_compare_intermediate.propietario.nombre | uppercase}} {{img.imagen_compare_intermediate.propietario.apellido | uppercase}} {{img.imagen_compare_intermediate.propietario.segundo_apellido | uppercase}}</span>
+                            <span class="label label-primary">DOCUMENTO: {{img.imagen_compare_intermediate.propietario.documento}}</span><br>
+                            <span class="label label-primary">% COINCIDENCIA: {{img.result_comparation * 100 | number : '1.2-2'}}</span>
+                        </a>
+                    </div>
+                </div>
             </div>
+            -->
         </div>
+    </div>
     <simple-notifications [options]="optionsNotifications"></simple-notifications>
     <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 </div>
