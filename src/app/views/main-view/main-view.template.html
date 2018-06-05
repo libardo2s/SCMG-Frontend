@@ -1,31 +1,31 @@
 <div class="col-lg-12 border-bottom  white-bg" style="margin-right:0;margin-left:0;margin-bottom:10px;padding-bottom: 10px;">
-    <div>
-        <div class="col-lg-8">
-            <h2 >Lista de Ganaderos</h2>
-            <ol class="breadcrumb">
-                <li>
-                    <a href="javascript:;">Ganaderos</a>
-                </li>
-                <li class="active">
-                    <strong>Lista de Ganaderos</strong>
-                </li>
-            </ol>
-        </div>
-        <div class="col-lg-4">
-            <div style="padding-left:0;margin-top:20px;margin-bottom:20px">
-                <div class="input-group">
-                    <input [(ngModel)]="query" type="text" class="form-control" placeholder="Buscar" />
-                    <span class="input-group-btn"> 
-                        <button type="button" class="btn btn-primary">
-                            <i class="fa fa-search"></i>
-                    </button> 
-                </span>
+        <div>
+            <div class="col-lg-8">
+                <h2 >Lista de Ganaderos</h2>
+                <ol class="breadcrumb">
+                    <li>
+                        <a href="javascript:;">Ganaderos</a>
+                    </li>
+                    <li class="active">
+                        <strong>Lista de Ganaderos</strong>
+                    </li>
+                </ol>
+            </div>
+            <div class="col-lg-4">
+                <div style="padding-left:0;margin-top:20px;margin-bottom:20px">
+                    <div class="input-group">
+                        <input [(ngModel)]="query" type="text" class="form-control" placeholder="Buscar" />
+                        <span class="input-group-btn"> 
+                            <button type="button" class="btn btn-primary">
+                                <i class="fa fa-search"></i>
+                        </button> 
+                    </span>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 </div>
-<div class="wrapper wrapper-content" style="margin-top:5px;">
+<div class="wrapper wrapper-content animated fadeInRight">
     <div class="col-lg-12 text-center white-bg" style="padding: 30px 15px 15px 15px;border-radius: 8px;">
         <div *ngIf="listGanaderos.length !==0; else elseBlock">
             <table class="table table-striped" style="color: #000;">
@@ -204,3 +204,4 @@
         </bs-modal-body>
     </bs-modal>
 </div>
+

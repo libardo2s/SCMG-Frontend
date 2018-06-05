@@ -13,6 +13,7 @@ import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import { ɵPRE_STYLE } from '@angular/animations';
 import { MessagingService } from '../../service/messaging.service';
+import { ResourceLoader } from '@angular/compiler';
 
 declare var jQuery:any;
 declare var $:any;
@@ -62,7 +63,14 @@ export class compareViewComponent implements OnInit {
             this.urlImage = URLS.imagePostCompare;
             this.msgService.getPermission()
             this.msgService.receiveMessage()
-            this.message = this.msgService.currentMessage
+            this.msgService.currentMessage.subscribe(
+                result=> {
+                    console.log(result);
+                }, err => {
+
+                }
+            );
+            console.log(this.message);
             // console.log(this._cookieService.get('csrftoken'));
         }
     }

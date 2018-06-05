@@ -8,5 +8,4 @@ typings/
 .idea/
 .DS_Store
 npm-debug.log
-*.js
 *.map
