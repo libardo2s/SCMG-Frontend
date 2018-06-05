@@ -40,9 +40,9 @@ h5 {
 }
 
 .background-div-login {
-  background-image: url("patterns/logo_valledupar.png");
-  width: 320px;
-  height: 219px;
+  background-image: url("patterns/valledupar-avanza.png");
+  width: 160px;
+  height: 78px;
   background-size: cover;
 }
 
@@ -51,7 +51,6 @@ h5 {
   width: 160px;
   height: 66px;
   background-size: cover;
-  margin-left: 60px;
 }
 
 .background-div-header {

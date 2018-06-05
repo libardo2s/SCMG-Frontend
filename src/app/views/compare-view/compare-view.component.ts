@@ -65,13 +65,18 @@ export class compareViewComponent implements OnInit {
             this.msgService.receiveMessage()
             this.msgService.currentMessage.subscribe(
                 result=> {
-                    console.log(result);
+                    if (result){
+                        if(result.title = 'Resultados') {
+                            let data = JSON.parse(result.notification.body);
+                            this.message = data;
+                        }else if ('Error') {
+                            this.openToast('error', 'Error durante el proceso de comparación, intente nuevamente');
+                        }
+                    }
                 }, err => {
 
                 }
             );
-            console.log(this.message);
-            // console.log(this._cookieService.get('csrftoken'));
         }
     }
 
@@ -121,7 +126,14 @@ export class compareViewComponent implements OnInit {
 
     onBeforeUpload = (metadata: UploadMetadata) => {
         this.loading = true;
-        metadata.abort = false;
+        let token = URLS.getIdRegistration();
+        let json_token = { 'registration_id': token};
+        if (token){
+            metadata.formData = json_token;
+            metadata.abort = false;
+        }else {
+            metadata.abort = true;
+        }
         return metadata;
     };
 
@@ -133,13 +145,31 @@ export class compareViewComponent implements OnInit {
             this.openToast('success', response.message);
             this.imagesResult = response.content;
             // console.log(this.imagesResult);
-            let timer_request = Observable.timer(0, 10000);
-            this.subscription = timer_request.subscribe(t => this.searchImages(response.id));
+            //let timer_request = Observable.timer(0, 10000);
+            //this.subscription = timer_request.subscribe(t => this.searchImages(response.id));
         }else {
             this.openToast('error', response.message);
         }
     };
 
+    confirmation(document: any, pos: number, comparation: any) {
+        swal({
+            title: 'Advertencia',
+            text: 'Seguro la imagen seleccionada coincide con la imagen provista ?',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si '
+          }).then((result) => {
+            if (result.value) {
+                this.saveMarca(document, comparation);
+            }
+          }
+        )
+    }
+
+    /*
     confirmation(data: any, pos: number, comparation: any) {
         swal({
             title: 'Advertencia',
@@ -180,6 +210,33 @@ export class compareViewComponent implements OnInit {
             this.openToast('error', ' Ha ocurrido un error, intente nuevamente');
         });
     }
+    */
+
+   saveMarca(document: any, comparation: any) {
+    if( comparation === null ) {
+        comparation = 0;
+    }
+    // console.log(data)
+    this.loading = true;
+    const form_data = new FormData();
+    form_data.append('id_marca', document);
+    form_data.append('image', $('#img-load').attr('src'));
+    form_data.append('coincidencia', comparation);
+    this.requestService.post('/api/compare/save/',form_data)
+    .subscribe( result => {
+        this.loading = false;
+        if (result.isOk) {
+            this.openToast('success', result.message);
+        }else {
+            this.openToast('error', result.message);
+        }
+    }, err => {
+        this.loading = false;
+        this.openToast('error', ' Ha ocurrido un error, intente nuevamente');
+    });
+}
+
+    
 
     searchImages(id) {
         this.loading = true;

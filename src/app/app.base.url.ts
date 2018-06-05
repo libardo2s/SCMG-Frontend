@@ -4,6 +4,7 @@ export class URLS {
     static imagePost = 'http://ganadoya.com/api/propietario/marca/';
     static imagePostCompare = 'http://ganadoya.com/api/compare/';
     */
+    
     static imagePost = 'http://127.0.0.1:8000/api/propietario/marca/';
     static imagePostCompare = 'http://127.0.0.1:8000/api/compare/';
     static debug = 'http://127.0.0.1:8000';
@@ -14,5 +15,13 @@ export class URLS {
 
     static getToken() {
         return sessionStorage.getItem('token');
+    }
+
+    static setIdRegistration(id: string){
+        sessionStorage.setItem('registration_id', id);
+    }
+
+    static getIdRegistration() {
+        return sessionStorage.getItem('registration_id');
     }
 }

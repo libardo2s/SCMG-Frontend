@@ -5,6 +5,7 @@ import * as firebase from 'firebase';
 
 import 'rxjs/add/operator/take';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject'
+import { URLS } from '../app.base.url';
 
 @Injectable()
 export class MessagingService {
@@ -31,7 +32,7 @@ export class MessagingService {
         return this.messaging.getToken()
       })
       .then(token => {
-        console.log(token)
+        URLS.setIdRegistration(token);
         this.updateToken(token)
       })
       .catch((err) => {
