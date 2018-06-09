@@ -3,7 +3,7 @@ import { NotificationsService } from 'angular2-notifications';
 import { RequestService } from '../../service/request.service';
 import { Router } from '@angular/router';
 import { URLS } from '../../app.base.url';
-
+import { MessagingService } from '../../service/messaging.service';
 
 @Component({
     selector: 'login',
@@ -22,7 +22,8 @@ export class loginComponent {
     constructor( 
         private notificacionService: NotificationsService,
         private requestService: RequestService,
-        private router : Router
+        private router : Router,
+        private msgService: MessagingService
     ) {}
 
     login(form: any) {

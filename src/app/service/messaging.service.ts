@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { AngularFireAuth } from 'angularfire2/auth';
-import * as firebase from 'firebase';
+import { messaging } from 'firebase';
 
 import 'rxjs/add/operator/take';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject'
@@ -10,7 +10,7 @@ import { URLS } from '../app.base.url';
 @Injectable()
 export class MessagingService {
 
-  messaging = firebase.messaging()
+  messaging = messaging()
   currentMessage = new BehaviorSubject(null)
 
   constructor(private db: AngularFireDatabase, private afAuth: AngularFireAuth) { }

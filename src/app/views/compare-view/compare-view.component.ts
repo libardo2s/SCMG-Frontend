@@ -21,7 +21,7 @@ declare var $:any;
 @Component({
     selector: 'compareView',
     templateUrl: 'compare-view.template.html',
-    providers: [NotificationsService, RequestService, ImageService, MessagingService],
+    providers: [NotificationsService, RequestService, ImageService],
     styleUrls: ['../../app.component.css'],
 })
 

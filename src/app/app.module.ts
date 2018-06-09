@@ -4,7 +4,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
-import { LocationStrategy, HashLocationStrategy } from '@angular/common';
+import { LocationStrategy, HashLocationStrategy, PathLocationStrategy } from '@angular/common';
 
 import { ROUTES } from "./app.routes";
 import { AppComponent } from './app.component';
@@ -57,7 +57,7 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
     AngularFireDatabaseModule,
     AngularFireAuthModule
   ],
-  providers: [{ provide: LocationStrategy, useClass: HashLocationStrategy }, CookieService, MessagingService],
+  providers: [{ provide: LocationStrategy, useClass: PathLocationStrategy }, CookieService, MessagingService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
