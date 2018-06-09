@@ -57,7 +57,7 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
     AngularFireDatabaseModule,
     AngularFireAuthModule
   ],
-  providers: [{ provide: LocationStrategy, useClass: PathLocationStrategy }, CookieService, MessagingService],
+  providers: [{ provide: LocationStrategy, useClass: HashLocationStrategy }, CookieService, MessagingService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

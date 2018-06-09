@@ -1,6 +1,6 @@
 export class URLS {
     
-    static debug = 'https://yhymar.webfactional.com/';
+    static debug = 'https://yhymar.webfactional.com';
     static imagePost = 'https://yhymar.webfactional.com/api/propietario/marca/';
     static imagePostCompare = 'https://yhymar.webfactional.com/api/compare/';
     
