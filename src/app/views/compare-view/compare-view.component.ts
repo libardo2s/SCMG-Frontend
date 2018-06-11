@@ -44,7 +44,7 @@ export class compareViewComponent implements OnInit {
         lastOnBottom: true
     }
 
-    message;
+    message = [];
 
     private subscription: Subscription;
 
@@ -61,20 +61,19 @@ export class compareViewComponent implements OnInit {
             this.router.navigate(['login']);
         }else {
             this.urlImage = URLS.imagePostCompare;
+            this.msgService.deleteMessage();
             this.msgService.getPermission()
             this.msgService.receiveMessage()
             this.msgService.currentMessage.subscribe(
                 result=> {
                     if (result){
-                        if(result.title = 'Resultados') {
-                            let data = JSON.parse(result.notification.body);
-                            this.message = data;
-                        }else if ('Error') {
-                            this.openToast('error', 'Error durante el proceso de comparación, intente nuevamente');
-                        }
+                        // console.log(result.data.resultados);
+                        let data = JSON.parse(result.data.resultados);
+                        this.message = data;
+                        this.openToast('success', 'Proceso de comparación terminado');
                     }
                 }, err => {
-
+                    console.log(err);
                 }
             );
         }
@@ -213,36 +212,34 @@ export class compareViewComponent implements OnInit {
     */
 
    saveMarca(document: any, comparation: any) {
-    if( comparation === null ) {
-        comparation = 0;
-    }
-    // console.log(data)
-    this.loading = true;
-    const form_data = new FormData();
-    form_data.append('id_marca', document);
-    form_data.append('image', $('#img-load').attr('src'));
-    form_data.append('coincidencia', comparation);
-    this.requestService.post('/api/compare/save/',form_data)
-    .subscribe( result => {
-        this.loading = false;
-        if (result.isOk) {
-            this.openToast('success', result.message);
-        }else {
-            this.openToast('error', result.message);
+        if( comparation === null ) {
+            comparation = 0;
         }
-    }, err => {
-        this.loading = false;
-        this.openToast('error', ' Ha ocurrido un error, intente nuevamente');
-    });
-}
-
-    
+        // console.log(data)
+        this.loading = true;
+        const form_data = new FormData();
+        form_data.append('id_marca', document);
+        form_data.append('image', $('#img-load').attr('src'));
+        form_data.append('coincidencia', comparation);
+        this.requestService.post('/api/compare/save/',form_data)
+        .subscribe( result => {
+            this.loading = false;
+            if (result.isOk) {
+                this.openToast('success', result.message);
+            }else {
+                this.openToast('error', result.message);
+            }
+        }, err => {
+            this.loading = false;
+            this.openToast('error', ' Ha ocurrido un error, intente nuevamente');
+        });
+    }
 
     searchImages(id) {
         this.loading = true;
         this.requestService.get('/api/compare/list-intermediate/'+id+'/')
         .subscribe( result => {
-            console.log(result);
+            // console.log(result);
             if (result.isOk) {
                 if(result.content.length !== 0){
                     this.list_result = result.content;

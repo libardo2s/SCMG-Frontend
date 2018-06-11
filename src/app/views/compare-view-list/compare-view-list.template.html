@@ -32,11 +32,11 @@
                 <tr *ngFor="let item of listImagesCompare | paginate: { itemsPerPage: 7, currentPage: p }">
                     <td>{{item.imagen_marca.propietario.documento}}</td>
                     <td>{{item.imagen_marca.propietario.nombre | uppercase}} {{item.imagen_marca.propietario.apellido | uppercase}}</td>
-                    <td><a href="javascript:;" (click)="showImages('Marca', item.imagen_muestra)"><i class="fa fa-file-image-o" style="font-size: 18px;"></i></a></td>
                     <td><a href="javascript:;" (click)="showImages('Muestra', item.imagen_marca.imagen)"><i class="fa fa-file-image-o" style="font-size: 18px;"></i></a></td>
+                    <td><a href="javascript:;" (click)="showImages('Marca', item.imagen_muestra)"><i class="fa fa-file-image-o" style="font-size: 18px;"></i></a></td>
                     <td>{{item.fechaDeSubida}}</td>
                     <td>{{item.result_comparation * 100}}</td>
-                    <td><a href="javascript:;" (click)="showImages('Marca', item.imagen_muestra)"><i class="fa fa-cloud-download" style="font-size: 18px;"></i></a></td>
+                    <td><a href="https://yhymar.webfactional.com/generar-pdf/{{item.id}}/" target="_blank"><i class="fa fa-cloud-download" style="font-size: 18px;"></i></a></td>
                 </tr>
             </tbody>
         </table>

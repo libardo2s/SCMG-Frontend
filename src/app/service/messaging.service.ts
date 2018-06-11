@@ -28,7 +28,7 @@ export class MessagingService {
   getPermission() {
       this.messaging.requestPermission()
       .then(() => {
-        console.log('Notification permission granted.');
+        // console.log('Notification permission granted.');
         return this.messaging.getToken()
       })
       .then(token => {
@@ -40,11 +40,14 @@ export class MessagingService {
       });
     }
 
-    receiveMessage() {
-       this.messaging.onMessage((payload) => {
-        // console.log("Message received. ", payload);
-        this.currentMessage.next(payload)
-      });
+  receiveMessage() {
+      this.messaging.onMessage((payload) => {
+      this.currentMessage.next(payload)
+    });
 
-    }
+  }
+
+  deleteMessage(){
+    this.currentMessage.next(null);
+  }
 }
