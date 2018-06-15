@@ -1,5 +1,6 @@
 export class URLS {
 
+    
     static debug = 'https://yhymar.webfactional.com';
     static imagePost = 'https://yhymar.webfactional.com/api/propietario/marca/';
     static imagePostCompare = 'https://yhymar.webfactional.com/api/compare/';
@@ -8,6 +9,7 @@ export class URLS {
     static imagePostCompare = 'http://127.0.0.1:8000/api/compare/';
     static debug = 'http://127.0.0.1:8000';
     */
+    
    
     static setToken(token: string) {
         sessionStorage.setItem('token', token);

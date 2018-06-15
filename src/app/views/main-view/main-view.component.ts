@@ -145,6 +145,8 @@ export class mainViewComponent implements OnInit {
                 .subscribe( result=> {
                     if (result.isOk){
                         this.openToast('suscess',result.message);
+                        let index = this.listGanaderos.findIndex(x=>x.documento===document);
+                        this.listGanaderos.splice(index,1);
                     }else {
                         this.openToast('error',result.message);
                     }

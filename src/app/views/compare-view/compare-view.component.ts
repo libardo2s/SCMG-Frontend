@@ -1,8 +1,7 @@
-import { Component, transition, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { NotificationsService } from 'angular2-notifications';
 import { OnInit } from '@angular/core/src/metadata/lifecycle_hooks';
 import { RequestService } from '../../service/request.service';
-import { Observable } from 'rxjs/Observable';
 import { URLS } from '../../app.base.url';
 import { ImageService } from 'angular2-image-upload/lib/image-upload/image.service';
 import { UploadMetadata } from 'angular2-image-upload';
@@ -11,11 +10,8 @@ import swal from 'sweetalert2'
 import { CookieService } from 'angular2-cookie/core';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
-import { ɵPRE_STYLE } from '@angular/animations';
 import { MessagingService } from '../../service/messaging.service';
-import { ResourceLoader } from '@angular/compiler';
 
-declare var jQuery:any;
 declare var $:any;
 
 @Component({
@@ -61,7 +57,6 @@ export class compareViewComponent implements OnInit {
             this.router.navigate(['login']);
         }else {
             this.urlImage = URLS.imagePostCompare;
-            this.msgService.deleteMessage();
             this.msgService.getPermission()
             this.msgService.receiveMessage()
             this.msgService.currentMessage.subscribe(
@@ -254,6 +249,6 @@ export class compareViewComponent implements OnInit {
     }
 
     ngOnDestroy() { 
-        // this.subscription.unsubscribe();    
+        this.msgService.deleteMessage();
     }
 }

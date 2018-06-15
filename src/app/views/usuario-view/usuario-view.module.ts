@@ -7,6 +7,7 @@ import { LoadingModule } from 'ngx-loading';
 import { ImageUploadModule } from "angular2-image-upload";
 import { BsModalModule } from 'ng2-bs3-modal';
 import { usuarioComponent } from './usuario-view.component';
+import {NgxPaginationModule} from 'ngx-pagination'; // <-- import the module
 
 @NgModule({
     declarations: [usuarioComponent],
@@ -18,7 +19,8 @@ import { usuarioComponent } from './usuario-view.component';
         FormsModule,
         ReactiveFormsModule,
         ImageUploadModule,
-        BsModalModule
+        BsModalModule,
+        NgxPaginationModule
     ],
 })
 

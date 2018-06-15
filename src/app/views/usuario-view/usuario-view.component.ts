@@ -1,20 +1,16 @@
-import { Component, transition, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { NotificationsService } from 'angular2-notifications';
 import { OnInit } from '@angular/core/src/metadata/lifecycle_hooks';
 import { RequestService } from '../../service/request.service';
-import { Observable } from 'rxjs/Observable';
 import { URLS } from '../../app.base.url';
 import { ImageService } from 'angular2-image-upload/lib/image-upload/image.service';
 import { UploadMetadata } from 'angular2-image-upload';
 import { BsModalComponent } from 'ng2-bs3-modal';
-import { COMPILER_OPTIONS } from '@angular/core/src/linker/compiler';
 import { CookieService } from 'angular2-cookie/core';
-import { RequestOptions, Headers } from '@angular/http';
 import { Router } from '@angular/router';
-import swal from 'sweetalert2';
 import { Subscription } from 'rxjs';
+import { MessagingService } from '../../service/messaging.service';
 
-declare var jQuery:any;
 declare var $:any;
 
 @Component({
@@ -27,11 +23,15 @@ declare var $:any;
 
 export class usuarioComponent implements OnInit {
 
+    p: number = 1;
+
+    @ViewChild('confirmModal')
+    modal: BsModalComponent;
     imagesResult = [];
     private list_result = [];
     urlImage: string;
     public options: { [name: string]: any } = {
-        // 'X-CSRFToken': this._cookieService.get('csrftoken'),
+        'X-CSRFToken': this._cookieService.get('csrftoken'),
     };
     loading = false;
     optionsNotifications = {
@@ -40,6 +40,8 @@ export class usuarioComponent implements OnInit {
         lastOnBottom: true
     }
 
+    message = [];
+
     private subscription: Subscription;
 
     constructor(
@@ -47,6 +49,7 @@ export class usuarioComponent implements OnInit {
         private requestService: RequestService,
         private _cookieService: CookieService,
         private router : Router,
+        private msgService: MessagingService
     ) {}
 
     ngOnInit(): void {
@@ -54,7 +57,19 @@ export class usuarioComponent implements OnInit {
             this.router.navigate(['login']);
         }else {
             this.urlImage = URLS.imagePostCompare;
-            console.log(this._cookieService.get('csrftoken'));
+            this.msgService.getPermission()
+            this.msgService.receiveMessage()
+            this.msgService.currentMessage.subscribe(
+                result=> {
+                    if (result){
+                        let data = JSON.parse(result.data.resultados);
+                        this.message = data;
+                        this.openToast('success', 'Proceso de comparación terminado');
+                    }
+                }, err => {
+                    console.log(err);
+                }
+            );
         }
     }
 
@@ -98,13 +113,20 @@ export class usuarioComponent implements OnInit {
               }
             reader.readAsDataURL(input[0].files[0]);
         } else {
-            console.log('input false');
+            // console.log('input false');
         }
     }
 
     onBeforeUpload = (metadata: UploadMetadata) => {
         this.loading = true;
-        metadata.abort = false;
+        let token = URLS.getIdRegistration();
+        let json_token = { 'registration_id': token};
+        if (token){
+            metadata.formData = json_token;
+            metadata.abort = false;
+        }else {
+            metadata.abort = true;
+        }
         return metadata;
     };
 
@@ -115,71 +137,15 @@ export class usuarioComponent implements OnInit {
         if (response.isOk) {
             this.openToast('success', response.message);
             this.imagesResult = response.content;
-            console.log(this.imagesResult);
-            let timer_request = Observable.timer(0, 10000);
-            this.subscription = timer_request.subscribe(t => this.searchImages(response.id));
+            // console.log(this.imagesResult);
+            //let timer_request = Observable.timer(0, 10000);
+            //this.subscription = timer_request.subscribe(t => this.searchImages(response.id));
         }else {
             this.openToast('error', response.message);
         }
     };
 
-    confirmation(data: any, pos: number, comparation: any) {
-        swal({
-            title: 'Advertencia',
-            text: 'Seguro la imagen seleccionada coincide con la imagen provista ?',
-            type: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Si '
-          }).then((result) => {
-            if (result.value) {
-                this.saveMarca(data, comparation);
-            }
-          }
-        )
-    }
-
-    saveMarca(data: any, comparation: any) {
-        if( comparation === null ) {
-            comparation = 0;
-        }
-        // console.log(data)
-        this.loading = true;
-        const form_data = new FormData();
-        form_data.append('id_marca', data.propietario.id);
-        form_data.append('image', $('#img-load').attr('src'));
-        form_data.append('coincidencia', comparation);
-        this.requestService.post('/api/compare/save/',form_data)
-        .subscribe( result => {
-            this.loading = false;
-            if (result.isOk) {
-                this.openToast('success', result.message);
-            }else {
-                this.openToast('error', result.message);
-            }
-        }, err => {
-            this.loading = false;
-            this.openToast('error', ' Ha ocurrido un error, intente nuevamente');
-        });
-    }
-
-    searchImages(id) {
-        this.requestService.get('/api/compare/list-intermediate/'+id+'/')
-        .subscribe( result => {
-            console.log(result);
-            if (result.isOk) {
-                this.list_result = result.content;
-                if (this.list_result[0].imagen_compare_intermediate !== null) {    
-                    this.imagesResult = this.list_result
-                    this.subscription.unsubscribe();
-                }
-                
-            }
-        })
-    }
-
     ngOnDestroy() { 
-        // this.subscription.unsubscribe();    
+        this.msgService.deleteMessage();
     }
 }
