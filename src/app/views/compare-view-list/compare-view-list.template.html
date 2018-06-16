@@ -36,7 +36,11 @@
                     <td><a href="javascript:;" (click)="showImages('Marca', item.imagen_muestra)"><i class="fa fa-file-image-o" style="font-size: 18px;"></i></a></td>
                     <td>{{item.fechaDeSubida}}</td>
                     <td>{{item.result_comparation * 100}}</td>
-                    <td><a href="https://yhymar.webfactional.com/generar-pdf/{{item.id}}/" target="_blank"><i class="fa fa-cloud-download" style="font-size: 18px;"></i></a></td>
+                    <!--
+                    <td><a href="http://127.0.0.1:8000/generar-pdf/{{item.id}}/" target="_blank"><i class="fa fa-cloud-download" style="font-size: 18px;"></i></a></td>
+                    -->
+                    <td><a href="https://yhymar.webfactional.com/generar-pdf/" target="_blank"><i class="fa fa-cloud-download" style="font-size: 18px;"></i></a></td>
+                    
                 </tr>
             </tbody>
         </table>
